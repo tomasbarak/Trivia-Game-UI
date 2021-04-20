@@ -1,0 +1,4 @@
+# depslib dependency file v1.0
+1618917625 source:/home/barak/Escritorio/CodeBlocks/SFMLApp/main.cpp
+	<SFML/Graphics.hpp>
+
