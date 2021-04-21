@@ -35,13 +35,11 @@
 		<Unit filename="Sanitizador.cpp">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
+		<Unit filename="auxFunctions.cpp" />
 		<Unit filename="functions.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Unit filename="main.cpp" />
-		<Unit filename="welcomeScreen.cpp">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
