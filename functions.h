@@ -10,7 +10,8 @@
 #include <time.h>
 
 void createWelcomeScreen();
-void loading(std::string username);
+
 std::string sanitization(std::string to_sanitize);
+std::vector <std::string> readStats(std::string userName, bool createUser);
 
 #endif // FUNCTIONS_H_INCLUDED
