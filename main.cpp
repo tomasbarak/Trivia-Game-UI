@@ -131,6 +131,24 @@ void createWelcomeScreen()
     labelSalir.setCharacterSize(24);
     labelSalir.setString("Salir");
 
+    //userStats
+    sf::Text menuItem1;
+    sf::Text menuItem2;
+    sf::Text menuItem3;
+
+    //Propiedades de items del menu
+    menuItem1.setFillColor(sf::Color{150, 150, 150});
+    menuItem2.setFillColor(sf::Color{150, 150, 150});
+    menuItem3.setFillColor(sf::Color{150, 150, 150});
+
+    menuItem1.setCharacterSize(18);
+    menuItem2.setCharacterSize(18);
+    menuItem3.setCharacterSize(18);
+
+    menuItem1.setString("Jugar");
+    menuItem2.setString("Ver estadisticas");
+    menuItem3.setString("Restablecer usuario");
+
     //Establecimiento de fuente Montserrat
     font.loadFromFile("Montserrat-Regular.ttf");
     playerText.setFont(font);
@@ -141,7 +159,11 @@ void createWelcomeScreen()
     labelUserNotExist.setFont(font);
     labelAcept.setFont(font);
     labelSalir.setFont(font);
-        bool createUser = false;
+
+    menuItem1.setFont(font);
+    menuItem2.setFont(font);
+    menuItem3.setFont(font);
+    bool createUser = false;
 
 
 
@@ -313,7 +335,7 @@ void createWelcomeScreen()
                 }
                 else
                 {
-                    environment = "userStats";
+                    environment = "menu";
                 }
             }
         }
@@ -344,12 +366,14 @@ void createWelcomeScreen()
 
             //Button mouse hover
             if(mouse.getPosition(window).x > aceptar.getPosition().x - (loadBounds2.width) && mouse.getPosition(window).x < aceptar.getPosition().x &&
-               mouse.getPosition(window).y > aceptar.getPosition().y - (loadBounds2.height/2) && mouse.getPosition(window).y < aceptar.getPosition().y + (loadBounds2.height/2)){
+                    mouse.getPosition(window).y > aceptar.getPosition().y - (loadBounds2.height/2) && mouse.getPosition(window).y < aceptar.getPosition().y + (loadBounds2.height/2))
+            {
 
                 aceptar.setFillColor(sf::Color{13, 152, 218});
                 labelAcept.setFillColor(sf::Color::White);
 
-                if(mouse.isButtonPressed(sf::Mouse::Left)){
+                if(mouse.isButtonPressed(sf::Mouse::Left))
+                {
 
                     createUser = true;
 
@@ -358,7 +382,9 @@ void createWelcomeScreen()
                     environment = "loading";
                 }
 
-            }else{
+            }
+            else
+            {
 
                 aceptar.setFillColor(sf::Color{255, 255, 255});
                 labelAcept.setFillColor(sf::Color{50, 50, 50});
@@ -377,16 +403,20 @@ void createWelcomeScreen()
 
             //Button salir mouse hover
             if(mouse.getPosition(window).x > salir.getPosition().x - (loadBounds4.width) && mouse.getPosition(window).x < salir.getPosition().x &&
-               mouse.getPosition(window).y > salir.getPosition().y - (loadBounds4.height/2) && mouse.getPosition(window).y < salir.getPosition().y + (loadBounds4.height/2)){
+                    mouse.getPosition(window).y > salir.getPosition().y - (loadBounds4.height/2) && mouse.getPosition(window).y < salir.getPosition().y + (loadBounds4.height/2))
+            {
 
                 salir.setFillColor(sf::Color{255, 0, 0});
                 labelSalir.setFillColor(sf::Color::White);
 
-                if(mouse.isButtonPressed(sf::Mouse::Left)){
+                if(mouse.isButtonPressed(sf::Mouse::Left))
+                {
                     window.close();
                 }
 
-            }else{
+            }
+            else
+            {
 
                 salir.setFillColor(sf::Color{255, 255, 255});
                 labelSalir.setFillColor(sf::Color{50, 50, 50});
@@ -399,6 +429,24 @@ void createWelcomeScreen()
             window.draw(labelAcept);
             window.draw(salir);
             window.draw(labelSalir);
+        }
+        else if(environment == "menu")
+        {
+            sf::FloatRect welcomeBounds1 = menuItem1.getLocalBounds();
+            menuItem1.setOrigin(welcomeBounds1.left + welcomeBounds1.width/2.0f, welcomeBounds1.top + welcomeBounds1.height/2.0f);
+            menuItem1.setPosition(sf::Vector2f(1000/2.0f,menuItem2.getPosition().y + 50));
+
+            sf::FloatRect welcomeBounds2 = menuItem2.getLocalBounds();
+            menuItem2.setOrigin(welcomeBounds2.left + welcomeBounds2.width/2.0f, welcomeBounds2.top + welcomeBounds2.height/2.0f);
+            menuItem2.setPosition(sf::Vector2f(1000/2.0f, 500/2));
+
+            sf::FloatRect welcomeBounds3 = menuItem3.getLocalBounds();
+            menuItem3.setOrigin(welcomeBounds3.left + welcomeBounds3.width/2.0f, welcomeBounds3.top + welcomeBounds3.height/2.0f);
+            menuItem3.setPosition(sf::Vector2f(1000/2.0f, menuItem2.getPosition().y - 50));
+
+            window.draw(menuItem1);
+            window.draw(menuItem2);
+            window.draw(menuItem3);
         }
         window.display();
         window.clear();
