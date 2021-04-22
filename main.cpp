@@ -242,27 +242,30 @@ void createWelcomeScreen()
                 else
                 {
                     //Si la tecla presionada = Tecla Enter
-                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+                    if(environment == "welcome")
                     {
-                        //Si el usuario escribio algo
-                        if(user.size() > 0)
+                        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
                         {
-                            //Defino el environment como "home", esto hara que se cambie de pantalla
-                            user = sanitization(user);
-                            environment = "loading";
-                            loadTimer.restart();
-                            window.clear();
+                            //Si el usuario escribio algo
+                            if(user.size() > 0)
+                            {
+                                //Defino el environment como "home", esto hara que se cambie de pantalla
+                                user = sanitization(user);
+                                environment = "loading";
+                                loadTimer.restart();
+                                window.clear();
+                            }
                         }
-                    }
-                    else
-                        //Si la tecla presionada no era la tecla de espacio ni la de enter
-                    {
-                        //Si el texto ingresado hasta ahora es menor a 17
-                        if(user.size() < 17)
+                        else
+                            //Si la tecla presionada no era la tecla de espacio ni la de enter
                         {
-                            //Agrego el caracter ingresado a mi string
-                            user += event.text.unicode;
-                            playerText.setString(user);
+                            //Si el texto ingresado hasta ahora es menor a 17
+                            if(user.size() < 17)
+                            {
+                                //Agrego el caracter ingresado a mi string
+                                user += event.text.unicode;
+                                playerText.setString(user);
+                            }
                         }
                     }
                 }
@@ -443,6 +446,66 @@ void createWelcomeScreen()
             sf::FloatRect welcomeBounds3 = menuItem3.getLocalBounds();
             menuItem3.setOrigin(welcomeBounds3.left + welcomeBounds3.width/2.0f, welcomeBounds3.top + welcomeBounds3.height/2.0f);
             menuItem3.setPosition(sf::Vector2f(1000/2.0f, menuItem2.getPosition().y - 50));
+
+            //Item 1 hover
+            if(mouse.getPosition(window).x > menuItem1.getPosition().x - (welcomeBounds1.width/2) && mouse.getPosition(window).x < menuItem1.getPosition().x + welcomeBounds1.width/2 &&
+                    mouse.getPosition(window).y > menuItem1.getPosition().y - (welcomeBounds1.height/2) && mouse.getPosition(window).y < menuItem1.getPosition().y + (welcomeBounds1.height/2))
+            {
+
+                menuItem1.setFillColor(sf::Color{13, 152, 218});
+
+                if(mouse.isButtonPressed(sf::Mouse::Left))
+                {
+                    environment = "game";
+                }
+
+            }
+            else
+            {
+
+                menuItem1.setFillColor(sf::Color{150, 150, 150});
+
+            }
+
+            //Item 2 hover
+            if(mouse.getPosition(window).x > menuItem2.getPosition().x - (welcomeBounds2.width/2) && mouse.getPosition(window).x < menuItem2.getPosition().x + welcomeBounds2.width/2 &&
+                    mouse.getPosition(window).y > menuItem2.getPosition().y - (welcomeBounds2.height/2) && mouse.getPosition(window).y < menuItem2.getPosition().y + (welcomeBounds2.height/2))
+            {
+
+                menuItem2.setFillColor(sf::Color{13, 152, 218});
+
+                if(mouse.isButtonPressed(sf::Mouse::Left))
+                {
+                    environment = "viewStats";
+                }
+
+            }
+            else
+            {
+
+                menuItem2.setFillColor(sf::Color{150, 150, 150});
+
+            }
+
+            //Item 3 hover
+            if(mouse.getPosition(window).x > menuItem3.getPosition().x - (welcomeBounds3.width/2) && mouse.getPosition(window).x < menuItem3.getPosition().x + welcomeBounds3.width/2 &&
+                    mouse.getPosition(window).y > menuItem3.getPosition().y - (welcomeBounds3.height/2) && mouse.getPosition(window).y < menuItem3.getPosition().y + (welcomeBounds3.height/2))
+            {
+
+                menuItem3.setFillColor(sf::Color{13, 152, 218});
+
+                if(mouse.isButtonPressed(sf::Mouse::Left))
+                {
+                    environment = "resetUser";
+                }
+
+            }
+            else
+            {
+
+                menuItem3.setFillColor(sf::Color{150, 150, 150});
+
+            }
 
             window.draw(menuItem1);
             window.draw(menuItem2);
