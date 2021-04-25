@@ -94,3 +94,290 @@ vector<string> readStats(std::string userName, bool createUser){
 
     return {};
 }
+
+std::vector <string> IU::respuesta_a_pregunta(DataObtainer::Pregunta pregunta)
+{
+    vector <string> data = {" ", " "};
+    int numero_respuesta_correcta;
+
+    if (pregunta.respuesta_correcta == "a")
+        numero_respuesta_correcta = 0;
+
+    else if (pregunta.respuesta_correcta == "b")
+        numero_respuesta_correcta = 1;
+
+    else if (pregunta.respuesta_correcta == "c")
+        numero_respuesta_correcta = 2;
+
+    else if (pregunta.respuesta_correcta == "d")
+        numero_respuesta_correcta = 3;
+
+    string respuesta;
+    cout << pregunta.texto_pregunta << endl;
+    data[0] = pregunta.texto_pregunta;
+    data[1] = pregunta.respuesta_correcta;
+
+    //cout << "[ ";
+    for (int i = 0; i < pregunta.respuestas_posibles.size(); i++)
+    {
+        //cout << pregunta.respuestas_posibles[0] << " ";
+        data.push_back(pregunta.respuestas_posibles[i]);
+    }
+    //cout << pregunta.respuestas_posibles[pregunta.respuestas_posibles.size() - 1] << " ]" << endl << endl;
+
+    //cout << ": ";
+
+    //getline(cin, respuesta);
+
+    //cout << "\n\nInsertado: " << respuesta << endl;
+    //cout << "Respuesta correcta(letra): " <<pregunta.respuesta_correcta << endl;
+    //cout << "Respuesta correcta(palabra): "<<pregunta.respuestas_posibles[numero_respuesta_correcta] << endl;
+
+    return data;
+
+    /*if (respuesta == pregunta.respuesta_correcta || respuesta == pregunta.respuestas_posibles[numero_respuesta_correcta])
+    {
+        //return true;
+
+    }
+    else{
+        //return false;
+    }*/
+
+}
+
+vector<string> DataObtainer::LeerArchivo(string &path, vector<int> &archivos_utilizados)
+{
+    /*  RECIBE: Direccion del archivo a leer (o "random"), y un vector que utiliza como registro de los archivos que ya abrió.
+        HACE: Lee las lineas del archivo insertado, y guarda los archivos ya abiertos en el vector proporcionado por el usuario.
+        DEVUELVE: Un vector con las listas leidas
+    */
+    ifstream archivo;
+    string texto_leido;
+
+    vector<string> lineas_leidas;
+    vector<string> archivos_pregunta;
+
+    for (int i = 0; i < archivos_utilizados.size(); i++)
+    {
+        cout << "i: " << archivos_utilizados[i] << endl;
+    }
+
+    if (path == "random")
+    {
+
+
+        // Elige un archivo cualquiera.
+        // Leer los archivos de pregunta del usuario
+        archivo.open("datos/CustomQuestions.txt");
+
+        if (archivo.is_open())
+        {
+            while (getline(archivo, texto_leido))
+            {
+                archivos_pregunta.push_back(texto_leido);
+            }
+
+        }
+
+        archivo.close();
+
+        bool archivo_nuevo = false;
+
+        int random_number, s_t_o_p = 1;
+
+        while (!archivo_nuevo)
+        {
+            if (s_t_o_p >= 1004)    // Realmente te tenes que odiar si tenes este numero de archivos personalizados
+                return { "/\\/\\" };
+
+
+            archivo_nuevo = true;
+
+            random_number = rand() % (archivos_pregunta.size() + 4); // https://www.cplusplus.com/reference/cstdlib/rand/
+
+            path = "datos/";
+
+            if (random_number > 3)
+            {
+                // Pasamos a los archivos de usuario
+                random_number -= 4;
+                path += archivos_pregunta[random_number];
+
+            }
+            else
+            {
+                path.push_back(49 + random_number); // 49 --> 1 en ASCII
+                path += ".data";
+
+            }
+
+            for (int i = 0; i < archivos_utilizados.size(); i++)
+            {
+                if (archivos_utilizados[i] == random_number) {
+                    archivo_nuevo = false;
+
+                }
+            }
+
+            s_t_o_p++;
+        }
+
+        archivos_utilizados.push_back(random_number);
+    }
+
+    archivo.open(path.c_str());
+
+    if (archivo.is_open())
+    {
+
+        while (getline(archivo, texto_leido))
+        {
+            lineas_leidas.push_back(texto_leido);
+        }
+    }
+
+    archivo.close();
+
+    return lineas_leidas;
+}
+
+bool DataObtainer::LoopMurio(vector<DataObtainer::Pregunta> input_directo)
+{
+    if (input_directo.size() == 0)
+        return false;
+
+    DataObtainer::Pregunta mensaje_de_muerte = { "/\\/\\", { "/\\/\\" }, "/\\/\\" };    // Pregunta que significa que el loop murió (o sea, no hay más archivos)
+
+    DataObtainer::Pregunta primera_pregunta = input_directo[0];
+
+    if (primera_pregunta.texto_pregunta == mensaje_de_muerte.texto_pregunta &&
+        primera_pregunta.respuestas_posibles == mensaje_de_muerte.respuestas_posibles &&
+        primera_pregunta.respuesta_correcta == mensaje_de_muerte.respuesta_correcta)
+    {
+        return true;
+    }
+
+    return false;
+}
+
+string FuncionesConvenientes::obtener_slice(string string_original, int posicion_inicial, int posicion_final, bool inclusive)
+{
+    string _slice;
+
+    if (!inclusive)
+    {
+        for (int i = posicion_inicial; i < posicion_final; i++)
+        {
+            _slice += string_original[i];
+        }
+
+        return _slice;
+
+    }
+    else
+    {
+        for (int i = posicion_inicial; i <= posicion_final; i++)
+        {
+            _slice += string_original[i];
+        }
+
+        return _slice;
+
+    }
+
+
+}
+
+void DataObtainer::MostrarPregunta(Pregunta datos)
+{
+    //cout << "Pregunta: \"" << datos.texto_pregunta << "\"" << endl;
+
+    //cout << "Respuestas Posibles: ";
+    for (int i = 0; i < datos.respuestas_posibles.size() - 1; i++)
+    {
+        cout << datos.respuestas_posibles[i] << " ";
+    }
+    //cout << datos.respuestas_posibles[datos.respuestas_posibles.size() - 1] << endl;
+
+    //cout << "Repuesta Correcta: " << datos.respuesta_correcta << endl << endl;
+}
+
+vector<DataObtainer::Pregunta> DataObtainer::FormatearPreguntas(vector<string> texto)
+{
+    /*  RECIBE: Un vector con lineas leidas.
+        HACE: Pasa los datos sueltos del vector a la estructura Pregunta (para relacionar los datos y acceder más facil a ellos)
+        DEVUELVE: Un vector con las preguntas
+    */
+
+    vector<DataObtainer::Pregunta> preguntas;
+
+    string _pregunta;
+    vector<string> _respuestas;
+    string _respuesta_correcta;
+
+    // Esta es la unica excepcion a la regla de abajo, pero la tenemos que hacer antes igual.
+    if (texto[0] == "/\\/\\") {
+        // No hay mas archivos
+        preguntas.push_back({ "/\\/\\", { "/\\/\\" }, "/\\/\\" });
+
+        return preguntas;
+
+    }
+
+    if (texto.size() % 2 != 0)
+        return {};  // Como siempre son Pregunta-Respuesta, si la cantidad de lineas es impar, ALGO ESTÁ MAL.
+
+    // Tenemos que revisar linea por linea
+    for (int i = 0; i < texto.size(); i++)
+    {
+        int numero_linea_actual = i + 1;
+
+        if (numero_linea_actual % 2 != 0)
+        {
+            // Es una pregunta
+            _pregunta = texto[i];
+
+            continue;
+
+        }
+        else
+        {
+            // Es una linea con respuestas
+
+            string linea_actual = texto[i]; // Esto no lo declaramos antes porque apenas lo usamos (como te podrás imaginar, eso está por cambiar)
+            vector<string> linea_cortada;
+            int ultima_posicion = 0;
+
+            // Tenemos que pasar CARACTER POR CARACTER
+            for (int o = 0; o < linea_actual.size(); o++)
+            {
+                // Separamos las lineas por espacios
+                if (linea_actual[o] == ' ')
+                {
+                    string _slice = FuncionesConvenientes::obtener_slice(linea_actual, ultima_posicion, o, false);  // Obtenemos la respuesta
+
+                    _respuestas.push_back(_slice);  // Añade la respuesta al vector
+
+                    ultima_posicion = o + 1; // Para que no apunte al espacio
+
+                    continue;
+
+                }
+            }
+            _respuesta_correcta = FuncionesConvenientes::obtener_slice(linea_actual, linea_actual.size() - 1, linea_actual.size() - 1, true); // Como la respuesta correcta no tiene un espacio atras, la obtenemos aparte
+
+            // La linea con las respuestas es la ultima linea para cada pregunta, así que acá tenemos que crear la Pregunta y añadirla al vector
+
+            DataObtainer::Pregunta nueva_pregunta = { _pregunta, _respuestas, _respuesta_correcta }; // Juntamos todos los datos en una pregunta
+
+            preguntas.push_back(nueva_pregunta);
+
+            // Reiniciamos todo (por las dudas)
+            _pregunta = "";
+            _respuestas.clear();
+            _respuesta_correcta = "";
+        }
+    }
+    return preguntas;
+}

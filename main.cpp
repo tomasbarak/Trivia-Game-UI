@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
 #include "functions.h"
 
@@ -32,6 +33,7 @@ void createWelcomeScreen()
     int i2 = 285;
     int i3 = 315;
 
+
     //WelcomeScreen
     sf::Clock myClock;
     bool showCursor = false;
@@ -61,9 +63,6 @@ void createWelcomeScreen()
     image.loadFromFile("SoftVisionLogoNoBGSmoke.png");
     sf::Texture texture;
     texture.loadFromImage(image);  //Load Texture from image
-    sprite.setScale(0.125f, 0.125f);
-    sprite.setPosition(436, 0);
-    sprite.setTexture(texture);
 
     //Loading screen
     sf::Clock myClock2;
@@ -131,10 +130,17 @@ void createWelcomeScreen()
     labelSalir.setCharacterSize(24);
     labelSalir.setString("Salir");
 
-    //userStats
+    //menu
     sf::Text menuItem1;
     sf::Text menuItem2;
     sf::Text menuItem3;
+    sf::SoundBuffer buffer;
+    buffer.loadFromFile("sound.wav");
+    sf::Sound sound;
+    sound.setBuffer(buffer);
+    bool playSound1 = true;
+    bool playSound2 = true;
+    bool playSound3 = true;
 
     //Propiedades de items del menu
     menuItem1.setFillColor(sf::Color{150, 150, 150});
@@ -149,6 +155,35 @@ void createWelcomeScreen()
     menuItem2.setString("Ver estadisticas");
     menuItem3.setString("Restablecer usuario");
 
+    //game
+    sf::Text question;
+    sf::Text answer1;
+    sf::Text answer2;
+    sf::Text answer3;
+    sf::Text answer4;
+    sf::Clock gameClock;
+    int iQ = 0;
+
+    //Propiedades de question
+    question.setFillColor(sf::Color{150, 150, 150});
+    question.setCharacterSize(24);
+
+    //Propiedadesde answer1
+    answer1.setFillColor(sf::Color{150, 150, 150});
+    answer1.setCharacterSize(20);
+
+    //Propiedadesde answer2
+    answer2.setFillColor(sf::Color{150, 150, 150});
+    answer2.setCharacterSize(20);
+
+    //Propiedadesde answer3
+    answer3.setFillColor(sf::Color{150, 150, 150});
+    answer3.setCharacterSize(20);
+
+    //Propiedadesde answer4
+    answer4.setFillColor(sf::Color{150, 150, 150});
+    answer4.setCharacterSize(20);
+
     //Establecimiento de fuente Montserrat
     font.loadFromFile("Montserrat-Regular.ttf");
     playerText.setFont(font);
@@ -159,13 +194,16 @@ void createWelcomeScreen()
     labelUserNotExist.setFont(font);
     labelAcept.setFont(font);
     labelSalir.setFont(font);
+    question.setFont(font);
+    answer1.setFont(font);
+    answer2.setFont(font);
+    answer3.setFont(font);
+    answer4.setFont(font);
 
     menuItem1.setFont(font);
     menuItem2.setFont(font);
     menuItem3.setFont(font);
     bool createUser = false;
-
-
 
     //Loop ejecutado mientras que la pantalla este abierta
     while (window.isOpen())
@@ -297,6 +335,10 @@ void createWelcomeScreen()
         //Renderizado de Welcome screen
         if(environment == "welcome")
         {
+            sprite.setScale(0.125f, 0.125f);
+            sprite.setPosition(436, 0);
+            sprite.setTexture(texture);
+
             //Logo
             window.draw(sprite);
             //Texto ingresado
@@ -329,7 +371,7 @@ void createWelcomeScreen()
             window.draw(loadingCircle2);
             window.draw(loadingCircle3);
             window.draw(labelCarga);
-            if(loadTimer.getElapsedTime() > sf::milliseconds(5000))
+            if(loadTimer.getElapsedTime() > sf::milliseconds(2500))
             {
                 loadTimer.restart();
                 if(readStats(user, createUser).size() < 1)
@@ -451,6 +493,12 @@ void createWelcomeScreen()
             if(mouse.getPosition(window).x > menuItem1.getPosition().x - (welcomeBounds1.width/2) && mouse.getPosition(window).x < menuItem1.getPosition().x + welcomeBounds1.width/2 &&
                     mouse.getPosition(window).y > menuItem1.getPosition().y - (welcomeBounds1.height/2) && mouse.getPosition(window).y < menuItem1.getPosition().y + (welcomeBounds1.height/2))
             {
+                if(playSound1)
+                {
+                    sound.setPlayingOffset(sf::milliseconds(0));
+                    //sound.play();
+                }
+                playSound1 = false;
 
                 menuItem1.setFillColor(sf::Color{13, 152, 218});
 
@@ -462,7 +510,7 @@ void createWelcomeScreen()
             }
             else
             {
-
+                playSound1 = true;
                 menuItem1.setFillColor(sf::Color{150, 150, 150});
 
             }
@@ -471,6 +519,12 @@ void createWelcomeScreen()
             if(mouse.getPosition(window).x > menuItem2.getPosition().x - (welcomeBounds2.width/2) && mouse.getPosition(window).x < menuItem2.getPosition().x + welcomeBounds2.width/2 &&
                     mouse.getPosition(window).y > menuItem2.getPosition().y - (welcomeBounds2.height/2) && mouse.getPosition(window).y < menuItem2.getPosition().y + (welcomeBounds2.height/2))
             {
+                if(playSound2)
+                {
+                    sound.setPlayingOffset(sf::milliseconds(0));
+                    //sound.play();
+                }
+                playSound2 = false;
 
                 menuItem2.setFillColor(sf::Color{13, 152, 218});
 
@@ -482,15 +536,22 @@ void createWelcomeScreen()
             }
             else
             {
-
+                playSound2 = true;
                 menuItem2.setFillColor(sf::Color{150, 150, 150});
 
             }
 
             //Item 3 hover
+
             if(mouse.getPosition(window).x > menuItem3.getPosition().x - (welcomeBounds3.width/2) && mouse.getPosition(window).x < menuItem3.getPosition().x + welcomeBounds3.width/2 &&
                     mouse.getPosition(window).y > menuItem3.getPosition().y - (welcomeBounds3.height/2) && mouse.getPosition(window).y < menuItem3.getPosition().y + (welcomeBounds3.height/2))
             {
+                if(playSound3)
+                {
+                    sound.setPlayingOffset(sf::milliseconds(0));
+                    //sound.play();
+                }
+                playSound3 = false;
 
                 menuItem3.setFillColor(sf::Color{13, 152, 218});
 
@@ -502,7 +563,7 @@ void createWelcomeScreen()
             }
             else
             {
-
+                playSound3 = true;
                 menuItem3.setFillColor(sf::Color{150, 150, 150});
 
             }
@@ -510,6 +571,145 @@ void createWelcomeScreen()
             window.draw(menuItem1);
             window.draw(menuItem2);
             window.draw(menuItem3);
+        }
+        else if(environment == "game")
+        {
+            std::string path = "random";
+            std::vector<int> archivos_utilizados;
+            path = "random";
+            std::vector<DataObtainer::Pregunta> preguntas = DataObtainer::FormatearPreguntas(DataObtainer::LeerArchivo(path, archivos_utilizados));
+            bool stop_program = false;
+
+            if (DataObtainer::LoopMurio(preguntas))
+            {
+                std::cout << "No hay mas archivos de pregunta." << std::endl;
+                stop_program = true;
+                continue;
+
+            }
+
+            std::vector <std::string> respuestas_preg;
+
+            if(iQ < preguntas.size())
+            {
+                if(gameClock.getElapsedTime() > sf::milliseconds(10000))
+                {
+                    respuestas_preg = IU::respuesta_a_pregunta(preguntas[iQ]);
+                    gameClock.restart();
+                    question.setString(respuestas_preg[0]);
+                    answer1.setString(respuestas_preg[2]);
+                    answer2.setString(respuestas_preg[3]);
+                    answer3.setString(respuestas_preg[4]);
+                    answer4.setString(respuestas_preg[5]);
+                    iQ++;
+                }
+            }
+
+            //Posicionamiento label pregunta
+            sf::FloatRect questionBounds = question.getLocalBounds();
+            question.setOrigin(questionBounds.left + questionBounds.width/2.0f, questionBounds.top + questionBounds.height/2.0f);
+            question.setPosition(sf::Vector2f((1000/2.0f),500/3.0f));
+
+            //Posicionamiento label respuesta 2 (centro)
+            sf::FloatRect answerBounds2 = answer2.getLocalBounds();
+            answer2.setOrigin(answerBounds2.left + answerBounds2.width/2.0f, answerBounds2.top + answerBounds2.height/2.0f);
+            answer2.setPosition(sf::Vector2f((1000/2.0f) - 100,500 - 500/3.0f));
+
+            if(mouse.getPosition(window).x > answer2.getPosition().x - (answerBounds2.width/2) && mouse.getPosition(window).x < answer2.getPosition().x + answerBounds2.width/2 &&
+                    mouse.getPosition(window).y > answer2.getPosition().y - (answerBounds2.height/2) && mouse.getPosition(window).y < answer2.getPosition().y + (answerBounds2.height/2))
+            {
+                answer2.setFillColor(sf::Color{13, 152, 218});
+
+                if(mouse.isButtonPressed(sf::Mouse::Left))
+                {
+
+                }
+
+            }
+            else
+            {
+                answer2.setFillColor(sf::Color{150, 150, 150});
+            }
+
+            //Posicionamiento label respuesta 1
+            sf::FloatRect answerBounds1 = answer1.getLocalBounds();
+            answer1.setOrigin(answerBounds1.width, answerBounds1.top + answerBounds1.height/2.0f);
+            answer1.setPosition(sf::Vector2f((answer2.getPosition().x) - 100,500 - 500/3.0f));
+
+            if(mouse.getPosition(window).x > answer1.getPosition().x - (answerBounds1.width) && mouse.getPosition(window).x < answer1.getPosition().x &&
+                    mouse.getPosition(window).y > answer1.getPosition().y - (answerBounds1.height/2) && mouse.getPosition(window).y < answer1.getPosition().y + (answerBounds1.height/2))
+            {
+                answer1.setFillColor(sf::Color{13, 152, 218});
+
+                if(mouse.isButtonPressed(sf::Mouse::Left))
+                {
+
+                }
+
+            }
+            else
+            {
+                answer1.setFillColor(sf::Color{150, 150, 150});
+            }
+
+            //Posicionamiento label respuesta 3
+            sf::FloatRect answerBounds3 = answer3.getLocalBounds();
+            answer3.setOrigin(answerBounds3.left + answerBounds3.width/2.0f, answerBounds3.top + answerBounds3.height/2.0f);
+            answer3.setPosition(sf::Vector2f((1000/2.0f) + 100,500 - 500/3.0f));
+
+            if(mouse.getPosition(window).x > answer3.getPosition().x - (answerBounds3.width/2) && mouse.getPosition(window).x < answer3.getPosition().x + answerBounds3.width/2 &&
+                    mouse.getPosition(window).y > answer3.getPosition().y - (answerBounds3.height/2) && mouse.getPosition(window).y < answer3.getPosition().y + (answerBounds3.height/2))
+            {
+                answer3.setFillColor(sf::Color{13, 152, 218});
+
+                if(mouse.isButtonPressed(sf::Mouse::Left))
+                {
+
+                }
+
+            }
+            else
+            {
+                answer3.setFillColor(sf::Color{150, 150, 150});
+            }
+
+            //Posicionamiento label respuesta 4
+            sf::FloatRect answerBounds4 = answer4.getLocalBounds();
+            answer4.setOrigin(answerBounds4.left, answerBounds4.top + answerBounds4.height/2.0f);
+            answer4.setPosition(sf::Vector2f(((answer3.getPosition().x) + 100),500 - 500/3.0f));
+
+            if(mouse.getPosition(window).x > answer4.getPosition().x  && mouse.getPosition(window).x < answer4.getPosition().x + answerBounds4.width &&
+                    mouse.getPosition(window).y > answer4.getPosition().y - (answerBounds4.height/2) && mouse.getPosition(window).y < answer4.getPosition().y + (answerBounds4.height/2))
+            {
+                answer4.setFillColor(sf::Color{13, 152, 218});
+
+                if(mouse.isButtonPressed(sf::Mouse::Left))
+                {
+
+                }
+
+            }
+            else
+            {
+                answer4.setFillColor(sf::Color{150, 150, 150});
+            }
+
+            sf::FloatRect answerImageBounds = sprite.getLocalBounds();
+            sprite.setOrigin(answerImageBounds.left + answerImageBounds.width/2.0f, answerImageBounds.top + answerImageBounds.height/2.0f);
+            sprite.setScale(0.075f, 0.075f);
+            sprite.setPosition(1000/2, 500 - 500/3);
+            sprite.setTexture(texture);
+
+
+
+            //question.setString();
+
+            window.draw(question);
+            window.draw(sprite);
+            window.draw(answer1);
+            window.draw(answer2);
+            window.draw(answer3);
+            window.draw(answer4);
         }
         window.display();
         window.clear();
